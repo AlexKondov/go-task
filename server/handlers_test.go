@@ -24,12 +24,12 @@ func Test_evaluateHandler(t *testing.T) {
 	server := prepareTestServer(router)
 
 	payload := []byte(`{"expression": "What is 5 plus 4?"}`)
-	req, _ := http.NewRequest("POST", server.URL + "/evaluate", bytes.NewBuffer(payload))
+	req, _ := http.NewRequest("POST", server.URL+"/evaluate", bytes.NewBuffer(payload))
 
 	recorder := httptest.NewRecorder()
 	router.ServeHTTP(recorder, req)
 
-	expected := struct{
+	expected := struct {
 		Result int `json:"result"`
 	}{
 		Result: 9,
@@ -55,12 +55,12 @@ func Test_validateHandler(t *testing.T) {
 	server := prepareTestServer(router)
 
 	payload := []byte(`{"expression": "What is 5 plus 4?"}`)
-	req, _ := http.NewRequest("POST", server.URL + "/validate", bytes.NewBuffer(payload))
+	req, _ := http.NewRequest("POST", server.URL+"/validate", bytes.NewBuffer(payload))
 
 	recorder := httptest.NewRecorder()
 	router.ServeHTTP(recorder, req)
 
-	expected := struct{
+	expected := struct {
 		Valid bool `json:"valid"`
 	}{
 		Valid: true,
@@ -86,18 +86,18 @@ func Test_errorsHandler(t *testing.T) {
 	server := prepareTestServer(router)
 
 	payload := []byte(`{"expression": "What is 5 plus 4"}`)
-	req, _ := http.NewRequest("POST", server.URL + "/evaluate", bytes.NewBuffer(payload))
+	req, _ := http.NewRequest("POST", server.URL+"/evaluate", bytes.NewBuffer(payload))
 
 	recorder := httptest.NewRecorder()
 	router.ServeHTTP(recorder, req)
 
-	req, _ = http.NewRequest("GET", server.URL + "/errors", nil)
+	req, _ = http.NewRequest("GET", server.URL+"/errors", nil)
 
 	recorder = httptest.NewRecorder()
 	router.ServeHTTP(recorder, req)
 
 	expected := []storage.ExpressionError{
-			{"What is 5 plus 4", "/evaluate", 1, "evaluation not terminated properly"},
+		{"What is 5 plus 4", "/evaluate", 1, "evaluation not terminated properly"},
 	}
 	expectedJSON, err := json.Marshal(expected)
 

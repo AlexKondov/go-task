@@ -11,13 +11,13 @@ import (
 
 type RequestHandler struct {
 	storage *storage.Storage
-	logger *logrus.Logger
+	logger  *logrus.Logger
 }
 
 func NewRequestHandler(storage *storage.Storage, logger *logrus.Logger) *RequestHandler {
 	return &RequestHandler{
 		storage: storage,
-		logger: logger,
+		logger:  logger,
 	}
 }
 
