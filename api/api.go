@@ -1,9 +1,9 @@
 package api
 
 import (
-	"go-task/evaluator"
-	"go-task/parser"
-	"go-task/storage"
+	"github.com/AlexKondov/go-task/internal/evaluator"
+	"github.com/AlexKondov/go-task/internal/parser"
+	"github.com/AlexKondov/go-task/internal/storage"
 )
 
 func IsValidExpression(expression string) (bool, error) {

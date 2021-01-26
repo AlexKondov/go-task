@@ -1,9 +1,10 @@
 package main
 
 import (
-	"go-task/server"
-	"go-task/storage"
 	"log"
+
+	"github.com/AlexKondov/go-task/internal/storage"
+	"github.com/AlexKondov/go-task/server"
 )
 
 func main() {

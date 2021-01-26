@@ -1,8 +1,9 @@
 package evaluator
 
 import (
-	"go-task/token"
 	"testing"
+
+	"github.com/AlexKondov/go-task/internal/token"
 )
 
 func TestTokenEvaluation(t *testing.T) {

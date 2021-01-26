@@ -2,9 +2,10 @@ package parser
 
 import (
 	"errors"
-	"go-task/token"
 	"strconv"
 	"strings"
+
+	"github.com/AlexKondov/go-task/internal/token"
 )
 
 type Parser struct {
