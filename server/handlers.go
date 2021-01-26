@@ -2,11 +2,11 @@ package server
 
 import (
 	"encoding/json"
-	"fmt"
-	"go-task/api"
-	"go-task/storage"
 	"log"
 	"net/http"
+
+	"github.com/AlexKondov/go-task/api"
+	"github.com/AlexKondov/go-task/internal/storage"
 )
 
 func evaluateHandler(w http.ResponseWriter, r *http.Request) {
@@ -14,8 +14,8 @@ func evaluateHandler(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&body)
 
 	if err != nil {
-		log.Fatal("Bad response")
 		w.WriteHeader(http.StatusBadRequest)
+		log.Fatal("Bad request body")
 		return
 	}
 
@@ -25,6 +25,7 @@ func evaluateHandler(w http.ResponseWriter, r *http.Request) {
 	response["result"] = num
 
 	if err != nil {
+		log.Printf("Error occurred in expression: %s", body["expression"])
 		storage.ErrorStorage.SaveError(body["expression"], r.URL.Path, err.Error())
 		response["error"] = err.Error()
 	}
@@ -32,7 +33,7 @@ func evaluateHandler(w http.ResponseWriter, r *http.Request) {
 	resp, err := json.Marshal(response)
 
 	if err != nil {
-		fmt.Print("Test")
+		log.Printf("Error marshalling response")
 	}
 
 	w.Write(resp)
@@ -44,6 +45,7 @@ func validateHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+		log.Fatal("Bad request body")
 		return
 	}
 
@@ -53,6 +55,7 @@ func validateHandler(w http.ResponseWriter, r *http.Request) {
 	response["valid"] = valid
 
 	if err != nil {
+		log.Printf("Error occurred in expression: %s", body["expression"])
 		storage.ErrorStorage.SaveError(body["expression"], r.URL.Path, err.Error())
 		response["reason"] = err.Error()
 	}
@@ -60,7 +63,7 @@ func validateHandler(w http.ResponseWriter, r *http.Request) {
 	resp, err := json.Marshal(response)
 
 	if err != nil {
-		fmt.Print("Test")
+		log.Printf("Error marshalling response")
 	}
 
 	w.Write(resp)
@@ -72,7 +75,7 @@ func errorsHandler(w http.ResponseWriter, r *http.Request) {
 	resp, err := json.Marshal(errors)
 
 	if err != nil {
-		fmt.Print("Test")
+		log.Printf("Error marshalling response")
 	}
 
 	w.Write(resp)

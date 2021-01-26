@@ -1,8 +1,9 @@
 package evaluator
 
 import (
-	"go-task/token"
 	"strconv"
+
+	"github.com/AlexKondov/go-task/internal/token"
 )
 
 type Evaluator struct {

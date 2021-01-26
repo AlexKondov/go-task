@@ -7,7 +7,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// StartServer spins up the web server and returns a possible error.
 func StartServer() error {
 	r := mux.NewRouter()
 

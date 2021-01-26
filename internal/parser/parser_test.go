@@ -1,8 +1,9 @@
 package parser
 
 import (
-	"go-task/token"
 	"testing"
+
+	"github.com/AlexKondov/go-task/internal/token"
 )
 
 func TestExpressionParsing(t *testing.T) {
