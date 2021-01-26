@@ -51,16 +51,16 @@ func TestExpressionParsingErrorHandling(t *testing.T) {
 		input    string
 		expected string
 	}{
-		{"What is 5 plus 4", "evaluation not terminated properly - use ? at the end"},
+		{"What is 5 plus 4", "evaluation not terminated properly"},
 		{"What is 5 plus 4 divided by?", "evaluation should not end on an operator"},
 		{"What is 5 plus plus 4?", "Keyword plus plus is not supported"},
 	}
 
-	for i, test := range tests {
+	for _, test := range tests {
 		p := New(test.input)
 		_, err := p.ParseExpression()
 
-		if err.Error() != tests[i].expected {
+		if err.Error() != test.expected {
 			t.Fatalf("parser.ParseExpression() produced wrong error: %s", err.Error())
 		}
 	}

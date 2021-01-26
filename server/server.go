@@ -1,21 +1,22 @@
 package server
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 )
 
-func StartServer() error {
+func NewRouter(handler *RequestHandler) http.Handler {
 	r := mux.NewRouter()
 
-	r.HandleFunc("/evaluate", evaluateHandler).Methods("POST")
-	r.HandleFunc("/validate", validateHandler).Methods("POST")
-	r.HandleFunc("/errors", errorsHandler).Methods("GET")
+	r.HandleFunc("/evaluate", handler.evaluate).Methods("POST")
+	r.HandleFunc("/validate", handler.validate).Methods("POST")
+	r.HandleFunc("/errors", handler.errors).Methods("GET")
 
-	log.Println("Starting server on port 8080")
+	return r
+}
+
+func StartServer(r http.Handler) error {
 	err := http.ListenAndServe(":8080", r)
-
 	return err
 }

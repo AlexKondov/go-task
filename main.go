@@ -1,17 +1,22 @@
 package main
 
 import (
-	"log"
-
 	"github.com/AlexKondov/go-task/internal/storage"
 	"github.com/AlexKondov/go-task/server"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
-	storage.InitStorage()
-	err := server.StartServer()
+	storageInstance := storage.New()
+	logger := logrus.New()
 
-	if err == nil {
-		log.Fatal("Error starting server")
+	handler := server.NewRequestHandler(storageInstance, logger)
+	router := server.NewRouter(handler)
+
+	logger.Info("Starting server on port 8080")
+	err := server.StartServer(router)
+
+	if err != nil {
+		logger.Fatal("Error starting server")
 	}
 }

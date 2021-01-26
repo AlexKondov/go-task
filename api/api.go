@@ -31,6 +31,6 @@ func EvaluateExpression(expression string) (int, error) {
 	return result, nil
 }
 
-func GetExpressionErrors() []storage.ExpressionError {
-	return storage.ErrorStorage.GetErrors()
+func GetExpressionErrors(s *storage.Storage) []storage.ExpressionError {
+	return s.GetErrors()
 }

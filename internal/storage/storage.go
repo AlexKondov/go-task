@@ -1,12 +1,14 @@
 package storage
 
-import "sync"
+import (
+	"sync"
+)
 
 type ExpressionError struct {
-	Expression string
-	Endpoint   string
-	Frequency  int
-	Type       string
+	Expression string `json:"expression"`
+	Endpoint   string `json:"endpoint"`
+	Frequency  int    `json:"frequency"`
+	Type       string `json:"type"`
 }
 
 type Storage struct {
@@ -14,20 +16,14 @@ type Storage struct {
 	mutex  sync.RWMutex
 }
 
-var ErrorStorage *Storage
-
-func InitStorage() {
-	if ErrorStorage != nil {
-		return
-	}
-
-	ErrorStorage = &Storage{
+func New() *Storage {
+	return &Storage{
 		errors: make([]ExpressionError, 0),
 		mutex:  sync.RWMutex{},
 	}
 }
 
-func (s *Storage) SaveError(expression, endpoint, errorType string) {
+func (s *Storage) SaveError(expression, endpoint, errorType string) error {
 	e := ExpressionError{
 		Expression: expression,
 		Endpoint:   endpoint,
@@ -41,11 +37,13 @@ func (s *Storage) SaveError(expression, endpoint, errorType string) {
 	for i := 0; i < len(s.errors); i++ {
 		if s.errors[i].Expression == e.Expression && s.errors[i].Type == e.Type {
 			s.errors[i].Frequency++
-			return
+			return nil
 		}
 	}
 
 	s.errors = append(s.errors, e)
+
+	return nil
 }
 
 func (s *Storage) GetErrors() []ExpressionError {

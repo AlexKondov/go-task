@@ -24,3 +24,21 @@ var Keywords = map[string]string{
 	"divided by":    DIVIDE,
 	"multiplied by": MULTIPLY,
 }
+
+func NewNumericToken(v string) Token {
+	t := Token{
+		Type:  NUMBER,
+		Value: v,
+	}
+
+	return t
+}
+
+func NewOperatorToken(v string) Token {
+	t := Token{
+		Type:  OPERATOR,
+		Value: v,
+	}
+
+	return t
+}

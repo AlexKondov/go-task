@@ -24,11 +24,11 @@ func (p *Parser) ParseExpression() ([]token.Token, error) {
 	e := strings.ToLower(p.expression)
 
 	if !strings.HasPrefix(e, token.QUESTION) {
-		return nil, errors.New("evaluation must start with 'What is'")
+		return nil, errors.New("evaluation must start with: " + token.QUESTION)
 	}
 
 	if !strings.HasSuffix(e, token.TERMINATION_SIGN) {
-		return nil, errors.New("evaluation not terminated properly - use ? at the end")
+		return nil, errors.New("evaluation not terminated properly")
 	}
 
 	text := e[len(token.QUESTION) : len(e)-1]
@@ -50,11 +50,8 @@ func (p *Parser) ParseExpression() ([]token.Token, error) {
 
 		if operator != "" {
 			if v, ok := token.Keywords[strings.TrimSpace(operator)]; ok {
-				token := token.Token{
-					Type:  token.OPERATOR,
-					Value: v,
-				}
-				tokens = append(tokens, token)
+				t := token.NewOperatorToken(v)
+				tokens = append(tokens, t)
 				operator = ""
 			} else {
 				// It's not a supported value or keyword
@@ -63,22 +60,15 @@ func (p *Parser) ParseExpression() ([]token.Token, error) {
 		}
 
 		// The token is a number
-		token := token.Token{
-			Type:  token.NUMBER,
-			Value: word,
-		}
-
-		tokens = append(tokens, token)
+		t := token.NewNumericToken(word)
+		tokens = append(tokens, t)
 	}
 
 	if operator != "" {
 		// If an unhandled operator has remained, add it to the stack
 		if v, ok := token.Keywords[strings.TrimSpace(operator)]; ok {
-			token := token.Token{
-				Type:  token.OPERATOR,
-				Value: v,
-			}
-			tokens = append(tokens, token)
+			t := token.NewOperatorToken(v)
+			tokens = append(tokens, t)
 			operator = ""
 		} else {
 			// It's not a supported value or keyword
