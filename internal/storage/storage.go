@@ -11,7 +11,7 @@ type ExpressionError struct {
 
 type Storage struct {
 	errors []ExpressionError
-	mutex  sync.Mutex
+	mutex  sync.RWMutex
 }
 
 var ErrorStorage *Storage
@@ -23,7 +23,7 @@ func InitStorage() {
 
 	ErrorStorage = &Storage{
 		errors: make([]ExpressionError, 0),
-		mutex:  sync.Mutex{},
+		mutex:  sync.RWMutex{},
 	}
 }
 
@@ -49,5 +49,8 @@ func (s *Storage) SaveError(expression, endpoint, errorType string) {
 }
 
 func (s *Storage) GetErrors() []ExpressionError {
+	s.mutex.RLock()
+	defer s.mutex.RUnlock()
+
 	return s.errors
 }
