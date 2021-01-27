@@ -12,6 +12,9 @@ func TestTokenEvaluation(t *testing.T) {
 		input  []token.Token
 		expect int
 	}{
+		{"No operation", []token.Token{
+			{"number", "5"},
+		}, 5},
 		{"Single operation", []token.Token{
 			{"number", "5"},
 			{"operator", token.PLUS},

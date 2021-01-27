@@ -11,6 +11,9 @@ func TestExpressionParsing(t *testing.T) {
 		input    string
 		expected []token.Token
 	}{
+		{"What is 5?", []token.Token{
+			{"number", "5"},
+		}},
 		{"What is 5 plus 4?", []token.Token{
 			{"number", "5"},
 			{"operator", token.PLUS},
@@ -54,6 +57,7 @@ func TestExpressionParsingErrorHandling(t *testing.T) {
 		{"What is 5 plus 4", "evaluation not terminated properly"},
 		{"What is 5 plus 4 divided by?", "evaluation should not end on an operator"},
 		{"What is 5 plus plus 4?", "Keyword plus plus is not supported"},
+		{"What is plus 4?", "expression should start with a number"},
 	}
 
 	for _, test := range tests {

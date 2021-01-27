@@ -34,6 +34,10 @@ func (p *Parser) ParseExpression() ([]token.Token, error) {
 	text := e[len(token.QUESTION) : len(e)-1]
 	words := strings.Fields(text)
 
+	if len(words) == 0 {
+		return nil, errors.New("no expression passed")
+	}
+
 	var tokens []token.Token
 	var operator string
 
@@ -74,6 +78,11 @@ func (p *Parser) ParseExpression() ([]token.Token, error) {
 			// It's not a supported value or keyword
 			return nil, errors.New("Keyword" + operator + " is not supported")
 		}
+	}
+
+	// If the expression doesn't start with a number it's not valid
+	if tokens[0].Type != token.NUMBER {
+		return nil, errors.New("expression should start with a number")
 	}
 
 	// Check if the last element is a number, if it's not it's not a valid operation
